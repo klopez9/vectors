@@ -1,0 +1,46 @@
+
+// These are notes for the Fraction ADT, but also apply for MyVector
+// With code f1=f2 ,it is actually f1.operator=(f2); 
+// here, f2 is const anyway, but not f1. 
+// When the method returns, f1 is returned as a reference to const, which is then used as the argument of
+// another operator= call, which in turn takes a reference to const argument.
+// So, you can do the following: f1 = f2 = f3;
+
+// Returning const reference also avoids extra 
+// copying and an implicit call to the copy constructor.
+
+// Bad Programming: Note, that it will compile, if your return type is not a reference. 
+// But, it could create serious bugs such as assigning a reference to a dangling object:
+// const Fraction & fractionRef= f2=f3;
+// as this will bind a temporay to fractionRef. 
+// Note that that object returned by value from operator= is temporary in this bad-programming case. 
+
+// If you return a constant reference, then the following code will compile:
+// const Fraction &newFraction = (f22 = f23);
+
+// However, the compiler will only let you invoke a method that is not const
+//    newFraction.modify(17, 33);    
+
+
+
+// More details on use of "const"
+
+1.
+
+const TestObject * fn();
+fn returns a pointer to a TestObject. The TestObject is constant.
+
+2.
+TestObject * const fn();
+
+fn returns a constant. The constant is a pointer that is pointing to TestObject.
+
+
+3.
+const TestObject * const fn();
+
+fn returns a constant. The constant is a pointer. The pointer points to a TestObject which is also a constant.
+
+4.
+const TestObject & fn();
+fn returns a reference to TestObject. TestObject is const.
